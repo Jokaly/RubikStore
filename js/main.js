@@ -228,10 +228,10 @@ function readTheContent(product){
     console.log(infoProduct);
 }
 
-function loadHtml() {
+function loadHtml(){
     clearHtml();
     buyThings.forEach(product => {
-        const { image, title, price, amount, id } = product;
+        const {image, title, price, amount, id} = product;
         const row = document.createElement('tr');
         row.classList.add('item');
         row.innerHTML = `
@@ -249,20 +249,20 @@ function loadHtml() {
             <td>
                 <div class="input-group quantity mt-4" style="width: 100px;">
                     <div class="input-group-btn">
-                        <button class="btn btn-sm btn-minus rounded-circle bg-light border" data-id="${id}">
+                        <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
                             <i class="fa fa-minus"></i>
                         </button>
                     </div>
-                    <input type="text" class="form-control form-control-sm text-center border-0" value="${amount}" readonly>
+                    <input type="text" class="form-control form-control-sm text-center border-0" value="${amount}">
                     <div class="input-group-btn">
-                        <button class="btn btn-sm btn-plus rounded-circle bg-light border" data-id="${id}">
+                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                             <i class="fa fa-plus"></i>
                         </button>
                     </div>
                 </div>
             </td>
             <td>
-                <p class="mb-0 mt-4">${(price * amount).toFixed(2)}</p>
+                <p class="mb-0 mt-4">${price * amount}</p>
             </td>
             <td>
                 <button class="btn btn-md rounded-circle bg-light border mt-4 delete-product" data-id="${id}">
@@ -272,39 +272,10 @@ function loadHtml() {
         `;
 
         containerBuyCart.appendChild(row);
-
-        // Evento para aumentar la cantidad
-        row.querySelector('.btn-plus').addEventListener('click', () => {
-            updateAmount(id, 1);
-        });
-
-        // Evento para disminuir la cantidad
-        row.querySelector('.btn-minus').addEventListener('click', () => {
-            updateAmount(id, -1);
-        });
+        priceTotal.innerHTML = totalCard;
+        amountProduct.innerHTML = countProduct;
     });
-
-    priceTotal.innerHTML = totalCard.toFixed(2);
-    amountProduct.innerHTML = countProduct;
 }
-
-function updateAmount(id, change) {
-    buyThings = buyThings.map(product => {
-        if (product.id === id) {
-            product.amount += change;
-
-            // Evitar que el `amount` sea menor a 1
-            if (product.amount < 1) product.amount = 1;
-
-            // Actualizar el total de la tarjeta
-            totalCard = parseFloat(totalCard) + parseFloat(product.price) * change;
-        }
-        return product;
-    });
-
-    loadHtml();
-}
-
 
 function clearHtml() {
     containerBuyCart.innerHTML = '';
